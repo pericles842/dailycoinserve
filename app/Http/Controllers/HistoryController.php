@@ -16,7 +16,7 @@ class HistoryController extends Controller
         $this->historyDcImplement = $historyDcImplement;
     }
 
-    public function getHistory(Request $request)
+    public function getHistory()
     {
         try {
             $data = $this->historyDcImplement->getHistory(DB::connection());

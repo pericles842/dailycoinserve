@@ -17,5 +17,5 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-Route::get('history/get', [\App\Http\Controllers\HistoryController::class, 'getHistory']); 
+//rutas de historial
+Route::get('history/get', [\App\Http\Controllers\HistoryController::class, 'getHistory']);
