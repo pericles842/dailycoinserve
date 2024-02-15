@@ -17,5 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-//rutas de historial
+/* RUTAS DE HISTORIAL */
 Route::get('history/get', [\App\Http\Controllers\HistoryController::class, 'getHistory']);
+
+/* RUTAS DE BANCOS Y ENTIDADES */
+Route::get('entity/get-bcv', [\App\Http\Controllers\BankingEntityController::class, 'getBcv']);
+Route::get('entity/get-enparalelo', [\App\Http\Controllers\BankingEntityController::class, 'getEnParalelo']);
