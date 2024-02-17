@@ -22,4 +22,4 @@ Route::get('history/get', [\App\Http\Controllers\HistoryController::class, 'getH
 
 /* RUTAS DE BANCOS Y ENTIDADES */
 Route::get('entity/get-bcv', [\App\Http\Controllers\BankingEntityController::class, 'getBcv']);
-Route::get('entity/get-enparalelo', [\App\Http\Controllers\BankingEntityController::class, 'getEnParalelo']);
+Route::get('entity/list-entities', [\App\Http\Controllers\BankingEntityController::class, 'getRateList']);

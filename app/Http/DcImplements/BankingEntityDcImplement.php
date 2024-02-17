@@ -4,6 +4,7 @@ namespace App\Http\DcImplements;
 
 use Illuminate\Support\Facades\Http;
 use DOMDocument;
+use DOMXPath;
 
 const meses = [
     "enero" => 1,
@@ -130,30 +131,51 @@ class BankingEntityDcImplement
      * @return array
      * 
      */
-    function getEnParalelo()
+    function getRateList()
     {
-        $response = Http::withoutVerifying()
-            ->withHeaders(['Accept' => 'text/html'])
-            ->get('https://monitordolarvenezuela.com/');
+        try {
+            // Realiza la solicitud HTTP utilizando Http::get()
+            $response = Http::withoutVerifying()
+                ->get('https://exchangemonitor.net/dolar-venezuela');
 
+            // Verifica si hay errores
+            if ($response->failed())   throw new \Exception('Error en la solicitud HTTP: ' . $response->status());
 
-        $html = $response->body();
+            libxml_use_internal_errors(true);
 
-        // Saltamos errores de sintaxis
-        libxml_use_internal_errors(true);
-        $dom = new DOMDocument();
+            $html = $response->body();
+            $dom = new DOMDocument();
+            $dom->loadHTML($html);
 
-        //Cargamos html de la petición
-        $dom->loadHTML($html);
-        // Saltamos errores de sintaxis
-        
-        // Obtener todas las etiquetas <small>
-        $smallTags = $dom->getElementsByTagName('small');
-        
-        foreach ($smallTags as $smallTag) {
-            // Imprimir el contenido de cada etiqueta <small>
-            dump( $smallTag->nodeValue . "\n");
+            $xpath = new DOMXPath($dom);
+            // Array para almacenar los bancos
+            $bancos = [];
+
+            // Obtener todos los elementos div
+            $divs = $dom->getElementsByTagName('div');
+
+            // Iterar sobre cada elemento div
+            foreach ($divs as $div) {
+                // Obtener el nombre del banco
+                $nombre = $xpath->evaluate('string(h6[@itemprop="name"])', $div);
+                // Obtener el precio del banco
+                $precio = ($xpath->evaluate('string(p[@itemprop="price"])', $div));
+
+                if (empty($nombre)  and $precio == 0) continue;
+                // Crear un array asociativo con el nombre y el precio del banco
+                $banco = [
+                    'name' => $nombre,
+                    'price' => $precio
+                ];
+
+                // Agregar el banco al array de bancos
+                $bancos[] = $banco;
+            }
+
+            return $bancos;
+        } catch (\Exception $e) {
+            // Maneja cualquier error que ocurra durante el proceso
+            return 'Error: ' . $e->getMessage();
         }
-        libxml_use_internal_errors(false);
     }
 }

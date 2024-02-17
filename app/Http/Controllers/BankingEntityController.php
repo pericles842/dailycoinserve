@@ -26,10 +26,10 @@ class BankingEntityController extends Controller
     }
 
 
-    public function getEnParalelo()
+    public function getRateList()
     {
         try {
-            $data = $this->BankingEntityDcImplement->getEnParalelo();
+            $data = $this->BankingEntityDcImplement->getRateList();
         } catch (\Exception $e) {
             return $e;
         }
