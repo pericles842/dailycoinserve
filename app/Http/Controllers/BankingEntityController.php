@@ -14,6 +14,11 @@ class BankingEntityController extends Controller
         $this->BankingEntityDcImplement = $BankingEntityDcImplement;
     }
 
+    /**
+     * Obtiene del implemento  BankingEntityDcImplement las tasas del banco central
+     *  
+     * @return object
+     */
     public function getBcv()
     {
         try {
@@ -26,6 +31,11 @@ class BankingEntityController extends Controller
     }
 
 
+    /**
+     * Obtiene del implemento  BankingEntityDcImplement un arreglo de varias entidades
+     *  
+     * @return object
+     */
     public function getRateList()
     {
         try {
