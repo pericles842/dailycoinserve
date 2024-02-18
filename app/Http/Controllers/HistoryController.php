@@ -26,4 +26,5 @@ class HistoryController extends Controller
 
         return response($data, 200)->header('Content-Type', 'application/json');
     }
+
 }

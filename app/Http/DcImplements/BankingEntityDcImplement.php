@@ -73,7 +73,7 @@ class BankingEntityDcImplement
 
                 $money[] = [
                     "price" => trim($this->getTagHtml('strong', $div)),
-                    "iso" => trim($this->getTagHtml('span', $div))
+                    "name" => trim($this->getTagHtml('span', $div))
                 ];
             }
 
@@ -168,6 +168,7 @@ class BankingEntityDcImplement
                     $nombre = $xpath->evaluate('string(.//h6[@itemprop="name"])', $div);
                     $precio = $xpath->evaluate('string(.//p[@itemprop="price"])', $div);
                     $status = $xpath->evaluate('string(.//p[@class="cambio-por"])', $div);
+                   // $sign =  $xpath->evaluate('string(.//p[@style="color:var(--color-rojo)"])', $div);
                     $date = $xpath->evaluate('string(.//p[@class="fecha"])', $div);
 
                     if (!empty($nombre) || !empty($precio)) {
@@ -175,7 +176,7 @@ class BankingEntityDcImplement
                         $nombre_convertido = iconv('UTF-8', 'ASCII//TRANSLIT', $nombre);
                         $key = str_replace(' ', '_', strtolower($nombre_convertido));
 
-                        if ($key == "d'olar_em")   $key =  "dolar_em";
+                        if ($key == "d'olar_em") $key =  "dolar_em";
 
                         $banco = [
                             'name' => $nombre,

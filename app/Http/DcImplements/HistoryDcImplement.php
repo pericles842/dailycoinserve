@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\DcImplements;
-//use App\Http\DcImplements\HistoryDcImplement;
+
 
 class HistoryDcImplement
 {
@@ -43,5 +43,29 @@ class HistoryDcImplement
         ];
 
         $connection->table('history')->insert($data);
+    }
+    /**
+     * Eliminar todos los registros de una tabla
+     * 
+     * @param Illuminate\Support\Facades\DB $connection
+     * @return mixed
+     */
+    public function deleteHistoryRecord($connection)
+    {
+        $connection->table('history')->truncate();
+    }
+
+    /**
+     * OBtener tasa del ultimo dia de la semana 
+     * 
+     * @param Illuminate\Support\Facades\DB $connection
+     * @param integer  $day_week dia de la semana 1 - 6 
+     * @return array
+     */
+    public function getDayWeekRate($connection, $day_week): array
+    {
+        return $connection->select("SELECT * FROM `history` WHERE day_week = :day_week", [
+            "day_week" => $day_week
+        ]);
     }
 }

@@ -23,3 +23,6 @@ Route::get('history/get', [\App\Http\Controllers\HistoryController::class, 'getH
 /* RUTAS DE BANCOS Y ENTIDADES */
 Route::get('entity/get-bcv', [\App\Http\Controllers\BankingEntityController::class, 'getBcv']);
 Route::get('entity/list-entities', [\App\Http\Controllers\BankingEntityController::class, 'getRateList']);
+
+/* Crear observación */
+Route::post('observation/create', [\App\Http\Controllers\ObservationController::class, 'createObservation']);
