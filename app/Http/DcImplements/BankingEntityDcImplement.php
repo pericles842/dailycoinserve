@@ -164,12 +164,15 @@ class BankingEntityDcImplement
                 if ($div->hasAttribute('itemprop') && $div->getAttribute('itemprop') === 'itemListElement') {
                     $banco = [];
 
+
                     //descendiente de cualquier nivel del contexto actual que tenga el atributo itemprop 
                     $nombre = $xpath->evaluate('string(.//h6[@itemprop="name"])', $div);
                     $precio = $xpath->evaluate('string(.//p[@itemprop="price"])', $div);
                     $status = $xpath->evaluate('string(.//p[@class="cambio-por"])', $div);
-                   // $sign =  $xpath->evaluate('string(.//p[@style="color:var(--color-rojo)"])', $div);
                     $date = $xpath->evaluate('string(.//p[@class="fecha"])', $div);
+
+                    $style = $xpath->evaluate('string(//p[contains(@class, "cambio-por")]/@style)');
+
 
                     if (!empty($nombre) || !empty($precio)) {
 
@@ -182,8 +185,8 @@ class BankingEntityDcImplement
                             'name' => $nombre,
                             'key' => $key,
                             'price' => $precio,
-                            'status' => $status,
-                            'label_status' => " proximamente",
+                            'status' => (string)  str_replace(['?', ' '], '', $status),
+                            'label_status'  => self::getStatusBank($style),
                             'date' => self::goBackDate($date),
                             'date_label' => $date
                         ];
@@ -233,7 +236,25 @@ class BankingEntityDcImplement
         $value_date = '-' .  $number . ' ' . $units_of_time[$time];
 
         $fecha_actual->modify($value_date);
-        // dump($value_date);
+
         return  $fecha_actual->format('Y-m-d H:i:s');
+    }
+
+    /**
+     * obtener status de peticion
+     * 
+     * @param string style_string stylo
+     * @example color:var(--color-verde) 
+     * @return  string
+     */
+    function getStatusBank(string $style_string)
+    {
+        $status = [
+            "verde" => "bajo", //subio
+            "rojo" => "alto ", // bajo
+            "neutro" => "neutro"  //neutro
+        ];
+        preg_match('/--color-(verde|rojo|neutro)/', $style_string, $matches);
+        return  $status[$matches[1]];
     }
 }

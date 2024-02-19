@@ -65,14 +65,25 @@ class HistorySetBank extends Command
                     break;
                 }
             }
+            $bcv_object = [
+                'name' => "BCV",
+                'price' => $bcv["currency"][1]['price'],
+                'label_status' => 'neutro'
 
+            ];
             //carga diaria de x cantidad de bancos
-            $carga_diaria = array_merge([$bcv["currency"][1]], [$en_paralelo]);
+            $carga_diaria = array_merge([$bcv_object], [$en_paralelo]);
 
 
             //verificamos la carga
             foreach ($carga_diaria as $carga) {
-                $this->historyDcImplement->createNewHistory(DB::connection(), $carga["name"], str_replace(',', '.',  $carga["price"]), date('w'), 'neutro');
+                $this->historyDcImplement->createNewHistory(
+                    DB::connection(),
+                    $carga["name"],
+                    str_replace(',', '.',  $carga["price"]),
+                    date('w'),
+                    isset($carga["label_status"])  
+                );
             }
         } catch (\Exception $e) {
             // Manejo de excepciones
