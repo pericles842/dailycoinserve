@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('set:history')->dailyAt('12:00');
+        $schedule->command('set:history')->dailyAt('15:00');
     }
 
     /**
