@@ -13,7 +13,35 @@ class HistoryDcImplement
      */
     public function getHistory($connection): array
     {
-        return $connection->select("SELECT * FROM `history`");
+        $array_history = $connection->select("SELECT * FROM `history`");
+
+        $coleccion = collect($array_history);
+
+        // Agrupar por el campo day_week
+        $agrupados = $coleccion->groupBy('day_week');
+
+        // Crear un nuevo arreglo para almacenar los resultados agrupados
+        $history = [];
+
+        // Iterar sobre los grupos
+        foreach ($agrupados as  $grupos) {
+            $item = [];
+
+            foreach ($grupos as $grupo) {
+
+                $item[] = [
+                    "name" => $grupo->name,
+                    "price" => $grupo->price,
+                    "statistics" => $grupo->statistics
+                ];
+            }
+
+            $history[] = [
+                'day' => $item,
+                'date' => $grupos->pluck('created_at')->toArray()[0]
+            ];
+        }
+        return $history;
     }
 
     /**
