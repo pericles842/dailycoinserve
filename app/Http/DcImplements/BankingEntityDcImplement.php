@@ -185,7 +185,7 @@ class BankingEntityDcImplement
                             'name' => $nombre,
                             'key' => $key,
                             'price' => $precio,
-                            'status' => (string)  str_replace(['?', ' '], '', $status),
+                            'percentage' => (string)  str_replace(['?', ' '], '', $status),
                             'label_status'  => self::getStatusBank($style),
                             'date' => self::goBackDate($date),
                             'date_label' => $date
