@@ -170,8 +170,7 @@ class BankingEntityDcImplement
                     $precio = $xpath->evaluate('string(.//p[@itemprop="price"])', $div);
                     $status = $xpath->evaluate('string(.//p[@class="cambio-por"])', $div);
                     $date = $xpath->evaluate('string(.//p[@class="fecha"])', $div);
-
-                    $style = $xpath->evaluate('string(//p[contains(@class, "cambio-por")]/@style)');
+                    $style = $xpath->evaluate('string(.//p[@class="cambio-por"]/@style)',$div); 
 
 
                     if (!empty($nombre) || !empty($precio)) {
@@ -180,7 +179,7 @@ class BankingEntityDcImplement
                         $key = str_replace(' ', '_', strtolower($nombre_convertido));
 
                         if ($key == "d'olar_em") $key =  "dolar_em";
-
+                       
                         $banco = [
                             'name' => $nombre,
                             'key' => $key,
