@@ -14,7 +14,6 @@ class HistoryDcImplement
     public function getHistory($connection)
     {
         $array_history = $connection->select("SELECT * FROM `history`");
-
         $coleccion = collect($array_history);
 
         // Agrupar por el campo day_week
@@ -40,7 +39,6 @@ class HistoryDcImplement
         $day_week,
         $statistics
     ) {
-
 
         $data = [
             'name' => $name,

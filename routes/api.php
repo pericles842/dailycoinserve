@@ -26,3 +26,6 @@ Route::get('entity/list-entities', [\App\Http\Controllers\BankingEntityControlle
 
 /* Crear observación */
 Route::post('observation/create', [\App\Http\Controllers\ObservationController::class, 'createObservation']);
+
+/* obtener version */
+Route::get('app-config/get-version', [\App\Http\Controllers\AppConfigDailyCoinController::class, 'getVersion']);

@@ -45,6 +45,13 @@ class DailycoinTablesV1 extends Migration
       $table->unsignedInteger('observation_type')->nullable(false);
     });
     DB::statement("CALL create_timestamps('observation')");
+
+    //Tabla de configuraciones de la app
+    Schema::create('config_app', function (Blueprint $table) {
+      $table->id();
+      $table->string('version', 100)->nullable(false)->comment('version de la app');
+    });
+    DB::statement("CALL create_timestamps('config_app')");
   }
 
   /**
@@ -57,5 +64,6 @@ class DailycoinTablesV1 extends Migration
     DB::unprepared('DROP PROCEDURE IF EXISTS create_timestamps');
     Schema::dropIfExists('history');
     Schema::dropIfExists('observation');
+    Schema::dropIfExists('config_app');
   }
 }
