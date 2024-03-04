@@ -250,7 +250,7 @@ class BankingEntityDcImplement
     {
         $status = [
             "verde" => "bajo", //subio
-            "rojo" => "alto ", // bajo
+            "rojo" => "alto", // bajo
             "neutro" => "neutro"  //neutro
         ];
         preg_match('/--color-(verde|rojo|neutro)/', $style_string, $matches);
