@@ -28,7 +28,7 @@ class BankingEntityDcImplement
      * 
      * @return array
      */
-    public function getBcv()
+    public  function getBcv()
     {
         $response = Http::withoutVerifying()
             ->withHeaders(['Accept' => 'text/html'])
@@ -131,7 +131,7 @@ class BankingEntityDcImplement
      * @return array
      * 
      */
-    function getRateList()
+    public static function getRateList()
     {
         try {
             // Realiza la solicitud HTTP utilizando Http::get()
@@ -170,7 +170,7 @@ class BankingEntityDcImplement
                     $precio = $xpath->evaluate('string(.//p[@itemprop="price"])', $div);
                     $status = $xpath->evaluate('string(.//p[@class="cambio-por"])', $div);
                     $date = $xpath->evaluate('string(.//p[@class="fecha"])', $div);
-                    $style = $xpath->evaluate('string(.//p[@class="cambio-por"]/@style)',$div); 
+                    $style = $xpath->evaluate('string(.//p[@class="cambio-por"]/@style)', $div);
 
 
                     if (!empty($nombre) || !empty($precio)) {
@@ -179,7 +179,7 @@ class BankingEntityDcImplement
                         $key = str_replace(' ', '_', strtolower($nombre_convertido));
 
                         if ($key == "d'olar_em") $key =  "dolar_em";
-                       
+
                         $banco = [
                             'name' => $nombre,
                             'key' => $key,
@@ -256,4 +256,5 @@ class BankingEntityDcImplement
         preg_match('/--color-(verde|rojo|neutro)/', $style_string, $matches);
         return  $status[$matches[1]];
     }
+
 }

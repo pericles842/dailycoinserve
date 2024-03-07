@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Http\DcImplements\HistoryDcImplement;
 use App\Http\DcImplements\BankingEntityDcImplement;
+use Dotenv\Parser\Value;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Console\Command;
 
@@ -48,44 +49,44 @@ class HistorySetBank extends Command
     public function handle()
     {
         try {
-            //*si se acaba la semana eliminara los registros
-            $list_history = $this->historyDcImplement->getDayWeekRate(DB::connection(), 6);
+            $status_bcv = HistoryDcImplement::getStatusBcvToday(DB::connection(),  date('w'));
 
-            if (!empty($list_history)) $this->historyDcImplement->deleteHistoryRecord(DB::connection());
+             
+            $list_history = HistoryDcImplement::getDayWeekRate(DB::connection(), 6);
+           
+            //*si se acaba la semana eliminara los registros
+
+            if (!empty($list_history)) HistoryDcImplement::deleteHistoryRecord(DB::connection());
 
             //extraigo variables
             $bcv = $this->bankingEntityDcImplement->getBcv();
-            $array_entities = $this->bankingEntityDcImplement->getRateList();
-            $en_paralelo = null;
+            $array_entities = BankingEntityDcImplement::getRateList();
 
-            //extraigo enparalelo 
-            foreach ($array_entities as $entity) {
-                if ($entity['key'] == 'enparalelovzla') {
-                    $en_paralelo = $entity;
-                    break;
-                }
-            }
+            //*Buscamos emparalelo
+            $en_paralelo = HistoryDcImplement::searchBankForName($array_entities, 'enparalelovzla','key');
+
+           
             $bcv_object = [
                 'name' => "BCV",
                 'price' => $bcv["currency"][1]['price'],
-                'label_status' => 'neutro'
+                'label_status' =>  $status_bcv 
 
             ];
             //carga diaria de x cantidad de bancos
             $carga_diaria = array_merge([$bcv_object], [$en_paralelo]);
 
 
-            //verificamos la carga
             foreach ($carga_diaria as $carga) {
                 $this->historyDcImplement->createNewHistory(
                     DB::connection(),
                     $carga["name"],
                     str_replace(',', '.',  $carga["price"]),
                     date('w'),
-                    isset($carga["label_status"])  
+                    $carga["label_status"]
                 );
             }
         } catch (\Exception $e) {
+           
             // Manejo de excepciones
             // Puedes mostrar un mensaje de error, registrar el error en un archivo de registro, etc.
             // Por ejemplo:
