@@ -213,7 +213,8 @@ class BankingEntityDcImplement
     {
 
         $fecha_actual = new \DateTime();
-
+        //Actualizó hace 8 días
+        //Actualizó hace más de un mes
         $units_of_time = [
             "horas" => 'hours',
             "hora" => 'hours',
@@ -225,9 +226,21 @@ class BankingEntityDcImplement
             "un" => 1,
             "una" => 1,
         ];
+
+        //*trasformamos la palabra en un arreglo
         $date_in_array = explode(" ", $date_in_string);
 
+        //*este es el caso de ser una palabra diferente elimina las sobras
+        //!ejemplo Actualizó hace más de un mes 
+        if (count($date_in_array) == 5) {
+            unset($date_in_array[2]);
+            unset($date_in_array[3]);
+        }
+
+        //!TERRMINAR ESTE BETA MANO // nueva frase
         $number = $date_in_array[2];
+
+        //*evaluar caracteres especiales 
         $number =  empty($units_of_time[$number]) ?  $number  : 1;
 
         $time = $date_in_array[3];
@@ -255,6 +268,5 @@ class BankingEntityDcImplement
         ];
         preg_match('/--color-(verde|rojo|neutro)/', $style_string, $matches);
         return  $status[$matches[1]];
-    }
-
+    }       
 }
