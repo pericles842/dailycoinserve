@@ -259,7 +259,7 @@ class BankingEntityDcImplement
      * @example color:var(--color-verde) 
      * @return  string
      */
-    function getStatusBank(string $style_string)
+   static function getStatusBank(string $style_string)
     {
         $status = [
             "verde" => "bajo", //subio
