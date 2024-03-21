@@ -186,7 +186,7 @@ class BankingEntityDcImplement
                             'price' => $precio,
                             'percentage' => (string)  str_replace(['?', ' '], '', $status),
                             'label_status'  => $this->getStatusBank($style),
-                            'date' => self::goBackDate($date),
+                            'date' =>    $this->goBackDate($date),
                             'date_label' => $date
                         ];
 
