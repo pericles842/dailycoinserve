@@ -209,7 +209,7 @@ class BankingEntityDcImplement
      * @example  s Actualizó hace 9 horas
      * @return  DateTime
      */
-    function goBackDate(string $date_in_string)
+    public function goBackDate(string $date_in_string)
     {
 
         $fecha_actual = new \DateTime();
@@ -259,7 +259,7 @@ class BankingEntityDcImplement
      * @example color:var(--color-verde) 
      * @return  string
      */
-    function getStatusBank(string $style_string)
+    public function getStatusBank(string $style_string)
     {
         $status = [
             "verde" => "bajo", //subio
