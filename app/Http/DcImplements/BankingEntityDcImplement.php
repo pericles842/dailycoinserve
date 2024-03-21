@@ -185,8 +185,8 @@ class BankingEntityDcImplement
                             'key' => $key,
                             'price' => $precio,
                             'percentage' => (string)  str_replace(['?', ' '], '', $status),
-                            'label_status'  => $this->getStatusBank($style),
-                            'date' =>    $this->goBackDate($date),
+                            'label_status'  => self::getStatusBank($style),
+                            'date' =>    self::goBackDate($date),
                             'date_label' => $date
                         ];
 
@@ -209,7 +209,7 @@ class BankingEntityDcImplement
      * @example  s Actualizó hace 9 horas
      * @return  DateTime
      */
-    public function goBackDate(string $date_in_string)
+    public static function goBackDate(string $date_in_string)
     {
 
         $fecha_actual = new \DateTime();
@@ -259,7 +259,7 @@ class BankingEntityDcImplement
      * @example color:var(--color-verde) 
      * @return  string
      */
-    public function getStatusBank(string $style_string)
+    public static function getStatusBank(string $style_string)
     {
         $status = [
             "verde" => "bajo", //subio
