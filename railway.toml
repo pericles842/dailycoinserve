@@ -1,8 +1,4 @@
-[build]
-frontend = "composer install --no-dev && php artisan migrate"
-
-[schedules]
-  [schedules.guardarMonedasHistorial]
+[schedules.guardarMonedasHistorial]
   name = "Ejecutar set:history a las 3:00 PM"
   command = "php artisan set:history"
   cron = "0 15 * * *"

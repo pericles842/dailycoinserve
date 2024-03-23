@@ -49,29 +49,30 @@ class HistorySetBank extends Command
     public function handle()
     {
         try {
-            $status_bcv = HistoryDcImplement::getStatusBcvToday(DB::connection(),  date('w'));
-
-             
-            $list_history = HistoryDcImplement::getDayWeekRate(DB::connection(), 6);
-           
-            //*si se acaba la semana eliminara los registros
-
-            if (!empty($list_history)) HistoryDcImplement::deleteHistoryRecord(DB::connection());
-
-            //extraigo variables
+            //extraigo LOS OBJETOS de las tasas
             $bcv = $this->bankingEntityDcImplement->getBcv();
             $array_entities = BankingEntityDcImplement::getRateList();
 
             //*Buscamos emparalelo
-            $en_paralelo = HistoryDcImplement::searchBankForName($array_entities, 'enparalelovzla','key');
+            $en_paralelo = HistoryDcImplement::searchBankForName($array_entities, 'enparalelovzla', 'key');
 
-           
+
+            //obtengo es estadus de bcv, IMPORTANTE TENER UN REGISTRO DEL DIA ANTERIOR
+            $status_bcv = HistoryDcImplement::getStatusBcvToday(DB::connection(),  date('w'), $bcv["currency"][1]['price']);
+            
             $bcv_object = [
                 'name' => "BCV",
                 'price' => $bcv["currency"][1]['price'],
-                'label_status' =>  $status_bcv 
+                'label_status' => $status_bcv
 
             ];
+
+            $list_history = HistoryDcImplement::getDayWeekRate(DB::connection(), 6);
+
+            //*si se acaba la semana eliminara los registros
+
+            if (!empty($list_history)) HistoryDcImplement::deleteHistoryRecord(DB::connection());
+
             //carga diaria de x cantidad de bancos
             $carga_diaria = array_merge([$bcv_object], [$en_paralelo]);
 
@@ -86,7 +87,6 @@ class HistorySetBank extends Command
                 );
             }
         } catch (\Exception $e) {
-           
             // Manejo de excepciones
             // Puedes mostrar un mensaje de error, registrar el error en un archivo de registro, etc.
             // Por ejemplo:

@@ -107,16 +107,12 @@ class HistoryDcImplement
         }
     }
 
-    public static function getStatusBcvToday($connection, $day_week)
+    public static function getStatusBcvToday($connection, $day_week, $price_today)
     {
         
-        $list_history_today = self::getDayWeekRate($connection, $day_week);
         $list_history_before =  self::getDayWeekRate($connection, $day_week - 1);
-
-
-        $BCV_today = (object) HistoryDcImplement::searchBankForName($list_history_today, 'BCV');
         $BCV_before = (object)  HistoryDcImplement::searchBankForName($list_history_before, 'BCV');
-      
-        return self::getStatusBankDb($BCV_before->price, $BCV_today->price);
+
+        return self::getStatusBankDb($BCV_before->price, $price_today);
     }
 }
